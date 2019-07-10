@@ -1,13 +1,55 @@
 server:
- port: 8200
+  port: 7000
+eureka:
+  instance:
+    instance-id: nstri-server-00
+    hostname: nstri-server-00
+  client:
+    service-url:
+      defaultZone: http://root:nstriroot@nstri-server-01:7001/eureka/,http://root:nstriroot@nstri-server-02:7002/eureka/
 spring:
- application:
-  name: icv-ms-vehicle
- cloud:
-  config:
-   server:
-    git:
-     uri: https://github.com/shansr/icv-ms-config.git     #配置远端GitServer的地址
-     username: ssr_sdu@126.com
-     password: suiji@126
+  profiles: nstri_server_00
+---
+
+server:
+  port: 7001
+eureka:
+  instance:
+    instance-id: nstri-server-01
+    hostname: nstri-server-01
+  client:
+    service-url:
+      defaultZone: http://root:nstriroot@nstri-server-00:7000/eureka/,http://root:nstriroot@nstri-server-02:7002/eureka/
+spring:
+  profiles: nstri_server_01
+---
+
+server:
+  port: 7002
+eureka:
+  instance:
+    instance-id: nstri-server-02
+    hostname: nstri-server-02
+  client:
+    service-url:
+      defaultZone: http://root:nstriroot@nstri-server-00:7000/eureka/,http://root:nstriroot@nstri-server-01:7001/eureka/
+spring:
+  profiles: nstri_server_02
+
+---
+
+spring:
+  application:
+    name: nstri-server
+  security:
+    user:
+      password: nstriroot
+      name: root
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+  server:
+    enable-self-preservation: false
   
