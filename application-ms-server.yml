@@ -37,6 +37,13 @@ spring:
   profiles: nstri_server_02
 
 ---
+
+spring:
+  security:
+    user:
+      password: nstriroot
+      name: root
+
 eureka:
   client:
     register-with-eureka: false
